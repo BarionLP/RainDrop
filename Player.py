@@ -1,9 +1,7 @@
-from random import uniform
-
 from ursina import *
 
 from CustomMath import Vec2
-from Flame import Flame
+from Item import Item, FlameThrower
 from RainDrop import RainDrop
 
 
@@ -12,7 +10,7 @@ class Player(RainDrop):
     speed: float = 0.4
     attackCooldown: float = 0
     linearDrag: float = 0.93
-    particleOffset = 0.13
+    item: Item = FlameThrower()
 
     def __init__(self, x: float, y: float):
         super().__init__(x, y, 0.4, 20, model="circle", color=color.cyan, collider="sphere")
@@ -24,7 +22,9 @@ class Player(RainDrop):
 
         if mouse.left and self.attackCooldown <= 0:
             self.attackCooldown = 0.1
-            Flame(self.x, self.y, Vec2(mouse.x + uniform(-self.particleOffset, self.particleOffset), mouse.y + uniform(-self.particleOffset, self.particleOffset)), self)
+            self.item.onUse(self)
+        else:
+            self.item.refill()
 
     def move(self):
         self.velocity += getInput()

@@ -2,21 +2,34 @@ from ursina import *
 
 from Enemy import Enemy
 from Player import Player
+from RainDrop import RainDrop
+
+
+class CameraController:
+    target: RainDrop
+    speed: float
+
+    def __init__(self, target: RainDrop, speed: float = 7):
+        self.target = target
+        self.speed = speed
+
+    def update(self):
+        self.entity.world_position = lerp(
+            self.entity.world_position,
+            self.target.world_position + Vec3(0,0, (self.target.scale_x * -15) - 15),
+            time.dt * self.speed)
 
 
 def main():
     app = Ursina()
 
     player = Player(0, 0)
-    Enemy(20, 20, player)
-    Enemy(-20, 20, player)
-    Enemy(20, -20, player)
-    Enemy(-20, -20, player)
-    # entity2 = Enemy(-4, -4, player)
+    Enemy(10, 10, player)
+    Enemy(-10, 10, player)
+    Enemy(10, -10, player)
+    Enemy(-10, -10, player)
 
-    # background = Entity(model="quad", scale=(13, 6), texture="assets/smiley.jpg", z=1)
-
-    camera.add_script(SmoothFollow(target=player, offset=[0, 0, -30]))
+    camera.add_script(CameraController(player))
 
     app.run()
 
