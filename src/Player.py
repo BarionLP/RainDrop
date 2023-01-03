@@ -1,9 +1,9 @@
 from ursina import *
 from ursina.prefabs.health_bar import HealthBar
 
-from CustomMath import Vec2
-from Item import Weapon, FlameThrower
 from RainDrop import RainDrop
+from src.CustomMath import Vec2
+from src.Item import Weapon, FlameThrower
 
 
 class Player(RainDrop):

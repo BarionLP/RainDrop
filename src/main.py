@@ -1,8 +1,8 @@
 from ursina import *
 
-from Enemy import Enemy
 from Player import Player
 from RainDrop import RainDrop
+from src.Enemy import Enemy
 
 
 class CameraController:
