@@ -8,7 +8,10 @@ def main():
     app = Ursina()
 
     player = Player(0, 0)
-    enemy = Enemy(12, 12, player)
+    Enemy(20, 20, player)
+    Enemy(-20, 20, player)
+    Enemy(20, -20, player)
+    Enemy(-20, -20, player)
     # entity2 = Enemy(-4, -4, player)
 
     # background = Entity(model="quad", scale=(13, 6), texture="assets/smiley.jpg", z=1)

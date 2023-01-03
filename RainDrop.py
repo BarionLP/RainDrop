@@ -1,6 +1,6 @@
 from ursina import *
-from ursina.hit_info import HitInfo
 from ursina import time
+from ursina.hit_info import HitInfo
 
 
 class RainDrop(Entity):
@@ -33,19 +33,21 @@ class RainDrop(Entity):
         if self.immunityTime > 0:
             self.immunityTime -= time.dt
 
-        # TODO:
-        # support multiple collisions
-        collided = self.intersects().entity
-        if isinstance(collided, RainDrop):
+        if self.intersects().entity is not None:
             self.onCollision(self.intersects())
 
     def onCollision(self, hit: HitInfo):
+        # TODO:
+        # support multiple collisions
+
+        if not isinstance(hit.entity, RainDrop):
+            return
         if hit.entity.water <= self.water:
             return
-
         if self.getDistance(hit.entity) > 0.2:
             return
 
+        hit.entity.mergedWithRainDrop(self.water)
         self.kill()
 
     def damage(self, amount: float, source: Entity):
@@ -59,6 +61,9 @@ class RainDrop(Entity):
         if self.isDriedOut():
             self.kill()
 
+    def mergedWithRainDrop(self, waterOther: float):
+        self.water += waterOther
+
     def __updateSize(self):
         size = self.water / 40 + 0.5
         self.scale = Vec3(size, size, size)
@@ -67,7 +72,4 @@ class RainDrop(Entity):
         return self.water <= 0
 
     def kill(self):
-        # TODO
-        # spawn particle effect
-
         destroy(self)

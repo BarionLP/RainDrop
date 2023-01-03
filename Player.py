@@ -34,9 +34,4 @@ class Player(RainDrop):
 
 
 def getInput() -> Vec2:
-    right = held_keys['d']
-    left = held_keys['a']
-    up = held_keys['w']
-    down = held_keys['s']
-
-    return Vec2(right - left, up - down).normalised()
+    return Vec2(held_keys['d'] - held_keys['a'], held_keys['w'] - held_keys['s']).normalised()
