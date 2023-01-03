@@ -5,33 +5,47 @@ from ursina import *
 from CustomMath import Vec2
 from Flame import Flame
 from RainDrop import RainDrop
+from SingleValueEvent import SingleValueEvent
 
 
-class Item:
+class Weapon:
+    inaccuracy: float = 0.13
+    maxAmmo: int = 100
+    _ammo: float = 0
+    onAmmoChangeEvent = SingleValueEvent()
+
+    @property
+    def ammo(self):
+        return self._ammo
+
+    @ammo.setter
+    def ammo(self, value):
+        self._ammo = value
+        self.onAmmoChangeEvent.invoke(value)
+
+    def __init__(self):
+        self.ammo = self.maxAmmo
+
     def onUse(self, user: RainDrop):
         pass
 
     def refill(self):
         pass
 
-class FlameThrower(Item):
-    inaccuracy: float = 0.13
-    maxPower: int = 100
-    power: float
 
+class FlameThrower(Weapon):
     def __init__(self):
-        self.power = self.maxPower
-        pass
+        super().__init__()
 
     def onUse(self, user: RainDrop):
-        if self.power <= 0:
+        if self.ammo <= 0:
             return
 
         Flame(user.x, user.y, Vec2(mouse.x + uniform(-self.inaccuracy, self.inaccuracy), mouse.y + uniform(-self.inaccuracy, self.inaccuracy)), user)
-        self.power -= 1
+        self.ammo -= 1
 
     def refill(self):
-        if self.power >= self.maxPower:
+        if self.ammo >= self.maxAmmo:
             return
 
-        self.power += time.dt
+        self.ammo += time.dt

@@ -1,7 +1,8 @@
 from ursina import *
+from ursina.prefabs.health_bar import HealthBar
 
 from CustomMath import Vec2
-from Item import Item, FlameThrower
+from Item import Weapon, FlameThrower
 from RainDrop import RainDrop
 
 
@@ -10,11 +11,16 @@ class Player(RainDrop):
     speed: float = 0.4
     attackCooldown: float = 0
     linearDrag: float = 0.93
-    item: Item = FlameThrower()
+    weapon: Weapon = FlameThrower()
+    ammoBar: HealthBar
 
     def __init__(self, x: float, y: float):
         super().__init__(x, y, 0.4, 20, model="circle", color=color.cyan, collider="sphere")
-        pass
+        self.ammoBar = HealthBar(max_value=self.weapon.maxAmmo, bar_color=color.orange, roundness=0.5)
+        self.weapon.onAmmoChangeEvent.addListener(self.updateAmmoBar)
+
+    def updateAmmoBar(self, value):
+        self.ammoBar.value = math.floor(value)
 
     def update(self):
         super().update()
@@ -22,9 +28,9 @@ class Player(RainDrop):
 
         if mouse.left and self.attackCooldown <= 0:
             self.attackCooldown = 0.1
-            self.item.onUse(self)
+            self.weapon.onUse(self)
         else:
-            self.item.refill()
+            self.weapon.refill()
 
     def move(self):
         self.velocity += getInput()
