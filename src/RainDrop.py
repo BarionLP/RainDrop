@@ -2,11 +2,14 @@ from ursina import *
 from ursina import time
 from ursina.hit_info import HitInfo
 
+from src.Event import Event
+
 
 class RainDrop(Entity):
     speed: float
     _water: float
     immunityTime: float = 0
+    onDeath: Event = Event()
 
     @property
     def water(self):
@@ -37,18 +40,16 @@ class RainDrop(Entity):
             self.onCollision(self.intersects())
 
     def onCollision(self, hit: HitInfo):
-        # TODO:
-        # support multiple collisions
+        for collided in hit.entities:
+            if not isinstance(collided, RainDrop):
+                continue
+            if collided.water <= self.water:
+                continue
+            if self.getDistance(collided) > 0.3:
+                continue
 
-        if not isinstance(hit.entity, RainDrop):
-            return
-        if hit.entity.water <= self.water:
-            return
-        if self.getDistance(hit.entity) > 0.2:
-            return
-
-        hit.entity.mergedWithRainDrop(self.water)
-        self.kill()
+            collided.mergedWithRainDrop(self.water)
+            self.kill()
 
     def damage(self, amount: float, source: Entity):
         if self.immunityTime > 0:
@@ -62,7 +63,7 @@ class RainDrop(Entity):
             self.kill()
 
     def mergedWithRainDrop(self, waterOther: float):
-        self.water += waterOther
+        self.water += waterOther/2
 
     def __updateSize(self):
         size = self.water / 40 + 0.5
@@ -72,4 +73,5 @@ class RainDrop(Entity):
         return self.water <= 0
 
     def kill(self):
+        self.onDeath.invoke()
         destroy(self)

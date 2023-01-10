@@ -8,11 +8,11 @@ maxDistance = 5
 
 
 class Enemy(RainDrop):
-    target = None
-    repulsionStrength = 0.5
+    target: RainDrop = None
+    repulsionStrength: float = 0.5
 
-    def __init__(self, x: float, y: float, target):
-        super().__init__(x, y, 2, 20, model="circle", color=color.red, collider="sphere")
+    def __init__(self, x: float, y: float, water: int, target: RainDrop):
+        super().__init__(x, y, 2, water, model="circle", color=color.red, collider="sphere")
         self.target = target
 
     def move(self):
@@ -25,21 +25,22 @@ class Enemy(RainDrop):
         self.y += force.y * self.speed * time.dt
 
     def getAttraction(self) -> Vec2:
+        if not self.target:
+            return Vec2(0, 0)
+
         return Vec2(self.target.x - self.x, self.target.y - self.y).normalised()
 
     def getRepulsion(self) -> Vec2:
         repulsionForce = Vec2(0, 0)
 
         for other in scene.entities:
-            if other == self.target or other == self:
-                continue
-            if not isinstance(other, Enemy):
+            if not isinstance(other, Enemy) or other == self:
                 continue
 
-            distance = self.getDistance(other)
+            distanceToOther = self.getDistance(other)
 
-            if distance < maxDistance:
+            if distanceToOther < maxDistance:
                 repulsionForce += Vec2(self.position.x - other.position.x, self.position.y - other.position.y).normalised() * repulsionStrength
-                # repulsionForce += (self.position - other.position).normalized() * repulsionStrength * (maxDistance - distance)
+                # repulsionForce += (self.position - other.position).normalized() * repulsionStrength * (maxDistance - distanceToOther)
 
         return repulsionForce

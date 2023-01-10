@@ -1,9 +1,9 @@
 from ursina import *
-from ursina.prefabs.health_bar import HealthBar
 
+from Bar import Bar
+from CustomMath import Vec2
+from Item import Weapon, FlameThrower
 from RainDrop import RainDrop
-from src.CustomMath import Vec2
-from src.Item import Weapon, FlameThrower
 
 
 class Player(RainDrop):
@@ -12,11 +12,11 @@ class Player(RainDrop):
     attackCooldown: float = 0
     linearDrag: float = 0.93
     weapon: Weapon = FlameThrower()
-    ammoBar: HealthBar
+    ammoBar: Bar
 
     def __init__(self, x: float, y: float):
         super().__init__(x, y, 0.4, 20, model="circle", color=color.cyan, collider="sphere")
-        self.ammoBar = HealthBar(max_value=self.weapon.maxAmmo, bar_color=color.orange, roundness=0.5)
+        self.ammoBar = Bar(max_value=self.weapon.maxAmmo, bar_color=color.orange, roundness=0.5)
         self.weapon.onAmmoChangeEvent.addListener(self.updateAmmoBar)
 
     def updateAmmoBar(self, value):

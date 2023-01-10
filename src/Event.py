@@ -1,4 +1,4 @@
-class SingleValueEvent:
+class Event:
     def __init__(self):
         self.handlers = []
 
@@ -12,6 +12,6 @@ class SingleValueEvent:
         if self.handlers.__contains__(handler):
             self.handlers.remove(handler)
 
-    def invoke(self, value):
+    def invoke(self):
         for handler in self.handlers:
-            handler(value)
+            handler()
