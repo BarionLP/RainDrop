@@ -1,6 +1,8 @@
 from ursina import *
 from ursina import curve
 
+# copied and modified from HealthBar
+
 
 class Bar(Button):
     def __init__(self, max_value=100, show_text=True, show_lines=False, **kwargs):

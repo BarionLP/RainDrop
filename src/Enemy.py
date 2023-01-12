@@ -9,20 +9,16 @@ maxDistance = 5
 
 class Enemy(RainDrop):
     target: RainDrop = None
-    repulsionStrength: float = 0.5
 
     def __init__(self, x: float, y: float, water: int, target: RainDrop):
-        super().__init__(x, y, 2, water, model="circle", color=color.red, collider="sphere")
+        super().__init__(x, y, 2, water)
         self.target = target
 
-    def move(self):
+    def getMovement(self) -> Vec2:
         direction = self.getAttraction()
         repulsion = self.getRepulsion()
 
-        force = direction + repulsion
-
-        self.x += force.x * self.speed * time.dt
-        self.y += force.y * self.speed * time.dt
+        return direction + repulsion
 
     def getAttraction(self) -> Vec2:
         if not self.target:

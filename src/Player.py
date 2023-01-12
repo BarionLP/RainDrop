@@ -15,9 +15,10 @@ class Player(RainDrop):
     ammoBar: Bar
 
     def __init__(self, x: float, y: float):
-        super().__init__(x, y, 0.4, 20, model="circle", color=color.cyan, collider="sphere")
+        super().__init__(x, y, 0.4, 20)
         self.ammoBar = Bar(max_value=self.weapon.maxAmmo, bar_color=color.orange, roundness=0.5)
         self.weapon.onAmmoChangeEvent.addListener(self.updateAmmoBar)
+        self.highlight = Entity(texture="assets/highlight_round", color=Color((0, 0.84, 1, 1)), parent=self, model="quad", scale=1.8)
 
     def updateAmmoBar(self, value):
         self.ammoBar.value = math.floor(value)
@@ -32,11 +33,10 @@ class Player(RainDrop):
         else:
             self.weapon.refill()
 
-    def move(self):
+    def getMovement(self) -> Vec2:
         self.velocity += getInput()
-        self.x += self.velocity.x * time.dt * self.speed
-        self.y += self.velocity.y * time.dt * self.speed
         self.velocity *= self.linearDrag
+        return self.velocity
 
 
 def getInput() -> Vec2:

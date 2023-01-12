@@ -1,3 +1,5 @@
+from math import degrees, atan2
+
 from ursina import *
 from ursina import time
 from ursina.hit_info import HitInfo
@@ -9,7 +11,8 @@ class RainDrop(Entity):
     speed: float
     _water: float
     immunityTime: float = 0
-    onDeath: Event = Event()
+    onDeath: Event
+    highlight: Entity
 
     @property
     def water(self):
@@ -21,17 +24,22 @@ class RainDrop(Entity):
         self.__updateSize()
 
     def __init__(self, x: float, y: float, speed: float, water: float, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(texture="assets/raindrop.png", model="quad", collider="sphere", **kwargs)
         self.x = x
         self.y = y
         self.speed = speed
         self.water = water
+        self.onDeath = Event()
 
-    def move(self):
+    def getMovement(self) -> Vec2:
         pass
 
     def update(self):
-        self.move()
+        force = self.getMovement()
+
+        self.x += force.x * self.speed * time.dt
+        self.y += force.y * self.speed * time.dt
+        self.rotation_z = degrees(atan2(-force.x, -force.y))
 
         if self.immunityTime > 0:
             self.immunityTime -= time.dt
@@ -45,7 +53,7 @@ class RainDrop(Entity):
                 continue
             if collided.water <= self.water:
                 continue
-            if self.getDistance(collided) > 0.3:
+            if self.getDistance(collided) > 0.3:  # TODO: make size dependent
                 continue
 
             collided.mergedWithRainDrop(self.water)
