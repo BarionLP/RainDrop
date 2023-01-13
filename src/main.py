@@ -3,6 +3,7 @@ from ursina import *
 from Enemy import Enemy
 from Player import Player
 from RainDrop import RainDrop
+from src.RainManager import RainManager
 
 
 class CameraController:
@@ -29,13 +30,16 @@ def onPlayerDeath():
 
 def main():
     app = Ursina()
+    RainManager(camera.ui)
 
     player = Player(0, 0)
     player.onDeath.addListener(onPlayerDeath)
-    Enemy(10, 10, 30, player)
-    Enemy(-10, 10, 21, player)
+    Enemy(10, 15, 35, player)
+    Enemy(-10, 10, 20, player)
+    Enemy(-10, 5, 29, player)
     Enemy(10, -10, 25, player)
-    Enemy(-10, -10, 40, player)
+    Enemy(-20, -20, 50, player)
+    Enemy(-40, -20, 80, player)
 
     camera.add_script(CameraController(player))
 

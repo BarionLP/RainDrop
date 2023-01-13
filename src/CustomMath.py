@@ -1,13 +1,12 @@
 import math
 
+from ursina import Vec2 as Vec2Ursina
 
-class Vec2:
-    x: float = 0
-    y: float = 0
+
+class Vec2(Vec2Ursina):
 
     def __init__(self, x: float, y: float):
-        self.x = x
-        self.y = y
+        super().__init__(x, y)
 
     def magnitudeSqr(self) -> float:
         return (self.x * self.x) + (self.y * self.y)

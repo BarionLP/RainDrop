@@ -15,7 +15,7 @@ class Player(RainDrop):
     ammoBar: Bar
 
     def __init__(self, x: float, y: float):
-        super().__init__(x, y, 0.4, 20)
+        super().__init__(x, y, 0.4, 15)
         self.ammoBar = Bar(max_value=self.weapon.maxAmmo, bar_color=color.orange, roundness=0.5)
         self.weapon.onAmmoChangeEvent.addListener(self.updateAmmoBar)
         self.highlight = Entity(texture="assets/highlight_round", color=Color((0, 0.84, 1, 1)), parent=self, model="quad", scale=1.8)

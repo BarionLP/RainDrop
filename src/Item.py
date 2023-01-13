@@ -9,7 +9,7 @@ from SingleValueEvent import SingleValueEvent
 
 
 class Weapon:
-    inaccuracy: float = 0.13
+    inaccuracy: float = 0.12
     maxAmmo: int = 100
     _ammo: float = 0
     onAmmoChangeEvent = SingleValueEvent()
@@ -38,7 +38,7 @@ class FlameThrower(Weapon):
         super().__init__()
 
     def onUse(self, user: RainDrop):
-        if self.ammo <= 0:
+        if self.ammo < 1:
             return
 
         Flame(user.x, user.y, Vec2(mouse.x + uniform(-self.inaccuracy, self.inaccuracy), mouse.y + uniform(-self.inaccuracy, self.inaccuracy)), user)

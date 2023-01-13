@@ -1,7 +1,7 @@
 from ursina import *
 from ursina.hit_info import HitInfo
 
-from Enemy import Enemy
+from RainDrop import RainDrop
 
 
 class Flame(Entity):
@@ -24,14 +24,14 @@ class Flame(Entity):
         self.x += self.direction.x * time.dt * self.speed
         self.y += self.direction.y * time.dt * self.speed
         self.scale *= 1 + time.dt * 0.5
-        self.alpha -= time.dt / 4
+        self.alpha -= time.dt/1.5
 
         if self.intersects():
             self.OnCollision(self.intersects())
 
     def OnCollision(self, hit: HitInfo):
         for collided in hit.entities:
-            if not isinstance(collided, Enemy):
+            if not isinstance(collided, RainDrop) or collided == self.source:
                 continue
 
             collided.damage(1, self.source)
