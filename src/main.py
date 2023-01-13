@@ -25,7 +25,7 @@ class CameraController:
 
 
 def onPlayerDeath():
-    print("player died")
+    pass
 
 
 def main():

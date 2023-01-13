@@ -10,7 +10,7 @@ class Rain(Entity):
         super().__init__(model="quad", texture="assets/raindrops.png", parent=parent)
         self.direction = direction
         self.scale = 2
-        self.alpha = .7
+        self.alpha = .3
         self.z = -1
         self.texture_offset = offset
 
@@ -38,10 +38,7 @@ class RainManager(Entity):
 
     def __init__(self, parent: Entity):
         super().__init__(parent=parent)
+        Audio("rain", autoplay=True, loop=True, auto_destroy=False)
         rain = Vec2(133, 339).normalised()
         self.rain1 = Rain(self, rain)
         self.rain2 = Rain(self, rain, Vec2(.5, .5))
-
-    def update(self):
-        # self.rain1.mot
-        pass

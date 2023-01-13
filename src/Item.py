@@ -6,13 +6,17 @@ from CustomMath import Vec2
 from Flame import Flame
 from RainDrop import RainDrop
 from SingleValueEvent import SingleValueEvent
+from src.Event import Event
 
 
 class Weapon:
     inaccuracy: float = 0.12
     maxAmmo: int = 100
     _ammo: float = 0
-    onAmmoChangeEvent = SingleValueEvent()
+    onAmmoChangeEvent: SingleValueEvent
+    onFireStart: Event
+    onFireEnd: Event
+    wasUsing: bool = False
 
     @property
     def ammo(self):
@@ -24,7 +28,10 @@ class Weapon:
         self.onAmmoChangeEvent.invoke(value)
 
     def __init__(self):
+        self.onAmmoChangeEvent = SingleValueEvent()
         self.ammo = self.maxAmmo
+        self.onFireStart = Event()
+        self.onFireEnd = Event()
 
     def onUse(self, user: RainDrop):
         pass
@@ -34,8 +41,13 @@ class Weapon:
 
 
 class FlameThrower(Weapon):
+    shootClip: Audio
+
     def __init__(self):
         super().__init__()
+        self.shootClip = Audio('flame', autoplay=False, auto_destroy=False, loop=True)
+        self.onFireStart.addListener(self.startShootClip)
+        self.onFireEnd.addListener(self.stopShootClip)
 
     def onUse(self, user: RainDrop):
         if self.ammo < 1:
@@ -49,3 +61,11 @@ class FlameThrower(Weapon):
             return
 
         self.ammo += time.dt
+
+    def startShootClip(self):
+        print("lol")
+        self.shootClip.play()
+
+    def stopShootClip(self):
+        print("lost")
+        self.shootClip.stop()
