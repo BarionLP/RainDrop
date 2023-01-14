@@ -4,6 +4,7 @@ from ursina import *
 from ursina import time
 from ursina.hit_info import HitInfo
 
+from CustomMath import Vec2
 from src.Event import Event
 
 
@@ -37,15 +38,20 @@ class RainDrop(Entity):
     def update(self):
         force = self.getMovement()
 
-        self.x += force.x * self.speed * time.dt
-        self.y += force.y * self.speed * time.dt
-        self.rotation_z = degrees(atan2(-force.x, -force.y))
+        if force.magnitudeSqr() != 0:
+            self.water -= self.scale_x*0.001
+            self.x += force.x * self.speed * time.dt
+            self.y += force.y * self.speed * time.dt
+            self.rotation_z = degrees(atan2(-force.x, -force.y))
 
         if self.immunityTime > 0:
             self.immunityTime -= time.dt
 
-        if self.intersects().entity is not None:
+        if self.intersects():
             self.onCollision(self.intersects())
+
+        if self.water < 0.5:
+            self.kill()
 
     def onCollision(self, hit: HitInfo):
         for collided in hit.entities:
@@ -71,7 +77,7 @@ class RainDrop(Entity):
             self.kill()
 
     def mergedWithRainDrop(self, waterOther: float):
-        self.water += waterOther/2
+        self.water += waterOther * 0.6
 
     def __updateSize(self):
         size = self.water / 40 + 0.5

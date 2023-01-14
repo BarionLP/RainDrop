@@ -53,7 +53,7 @@ class FlameThrower(Weapon):
         if self.ammo < 1:
             return
 
-        Flame(user.x, user.y, Vec2(mouse.x + uniform(-self.inaccuracy, self.inaccuracy), mouse.y + uniform(-self.inaccuracy, self.inaccuracy)), user)
+        Flame(user.x, user.y, Vec2(mouse.x + uniform(-self.inaccuracy, self.inaccuracy), mouse.y + uniform(-self.inaccuracy, self.inaccuracy)).normalised()*user.scale_x, user)
         self.ammo -= 1
 
     def refill(self):
@@ -63,9 +63,7 @@ class FlameThrower(Weapon):
         self.ammo += time.dt
 
     def startShootClip(self):
-        print("lol")
         self.shootClip.play()
 
     def stopShootClip(self):
-        print("lost")
         self.shootClip.stop()

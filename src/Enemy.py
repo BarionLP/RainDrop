@@ -3,7 +3,7 @@ from ursina import *
 from CustomMath import Vec2
 from RainDrop import RainDrop
 
-repulsionStrength = 0.4
+repulsionStrength = 0.3
 maxDistance = 5
 
 
@@ -24,7 +24,10 @@ class Enemy(RainDrop):
         if not self.target:
             return Vec2(0, 0)
 
-        return Vec2(self.target.x - self.x, self.target.y - self.y).normalised()
+        if self.target.water > self.water:
+            return Vec2(self.x - self.target.x, self.y - self.target.y).normalised() / 2
+
+        return Vec2(self.target.x - self.x, self.target.y - self.y).normalised() / 2
 
     def getRepulsion(self) -> Vec2:
         repulsionForce = Vec2(0, 0)
@@ -36,7 +39,7 @@ class Enemy(RainDrop):
             distanceToOther = self.getDistance(other)
 
             if distanceToOther < maxDistance:
-                repulsionForce += Vec2(self.position.x - other.position.x, self.position.y - other.position.y).normalised() * repulsionStrength
+                repulsionForce += Vec2(self.x - other.position.x, self.y - other.position.y).normalised() * repulsionStrength
                 # repulsionForce += (self.position - other.position).normalized() * repulsionStrength * (maxDistance - distanceToOther)
 
         return repulsionForce
