@@ -40,8 +40,8 @@ class RainDrop(Entity):
 
         if force.magnitudeSqr() != 0:
             self.water -= self.scale_x*0.001
-            self.x += force.x * self.speed * time.dt
-            self.y += force.y * self.speed * time.dt
+            self.x += force.x * self.speed * time.dt * self.scale_x
+            self.y += force.y * self.speed * time.dt * self.scale_x
             self.rotation_z = degrees(atan2(-force.x, -force.y))
 
         if self.immunityTime > 0:

@@ -11,7 +11,7 @@ class Enemy(RainDrop):
     target: RainDrop = None
 
     def __init__(self, x: float, y: float, water: int, target: RainDrop):
-        super().__init__(x, y, 2, water)
+        super().__init__(x, y, 2.2, water)
         self.target = target
 
     def getMovement(self) -> Vec2:
@@ -39,7 +39,7 @@ class Enemy(RainDrop):
             distanceToOther = self.getDistance(other)
 
             if distanceToOther < maxDistance:
-                repulsionForce += Vec2(self.x - other.position.x, self.y - other.position.y).normalised() * repulsionStrength
+                repulsionForce += Vec2(self.x - other.position.x, self.y - other.position.y).normalised() * repulsionStrength * (maxDistance - distanceToOther)
                 # repulsionForce += (self.position - other.position).normalized() * repulsionStrength * (maxDistance - distanceToOther)
 
-        return repulsionForce
+        return repulsionForce.normalised()

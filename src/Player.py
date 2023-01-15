@@ -15,7 +15,7 @@ class Player(RainDrop):
     ammoBar: Bar
 
     def __init__(self, x: float, y: float):
-        super().__init__(x, y, 0.4, 25)
+        super().__init__(x, y, 0.3, 25)
         self.weapon = FlameThrower()
         self.ammoBar = Bar(max_value=self.weapon.maxAmmo, bar_color=color.orange, roundness=0.5)
         self.weapon.onAmmoChangeEvent.addListener(self.updateAmmoBar)

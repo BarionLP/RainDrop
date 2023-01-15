@@ -10,7 +10,7 @@ from src.Event import Event
 
 
 class Weapon:
-    inaccuracy: float = 0.12
+    inaccuracy: float = 0.10
     maxAmmo: int = 100
     _ammo: float = 0
     onAmmoChangeEvent: SingleValueEvent

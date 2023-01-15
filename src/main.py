@@ -4,12 +4,6 @@ from Enemy import Enemy
 from Player import Player
 from RainDrop import RainDrop
 from src.RainManager import RainManager
-from ursina import *
-
-from Enemy import Enemy
-from Player import Player
-from RainDrop import RainDrop
-from src.RainManager import RainManager
 
 global player
 
@@ -62,8 +56,8 @@ def spawn_entity():
     if not player:
         return
 
-    min_spawn_area = 5
-    max_spawn_area = 10
+    min_spawn_area = 4.5 * player.scale_x
+    max_spawn_area = 9 * player.scale_x
 
     def rndInCircle():
         rnd = random.uniform(min_spawn_area, max_spawn_area)
