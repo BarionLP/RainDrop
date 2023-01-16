@@ -3,7 +3,7 @@ from ursina import *
 from Enemy import Enemy
 from Player import Player
 from RainDrop import RainDrop
-from src.RainManager import RainManager
+from RainManager import RainManager
 
 global player
 

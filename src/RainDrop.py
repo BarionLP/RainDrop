@@ -5,7 +5,7 @@ from ursina import time
 from ursina.hit_info import HitInfo
 
 from CustomMath import Vec2
-from src.Event import Event
+from Event import Event
 
 
 class RainDrop(Entity):

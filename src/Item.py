@@ -3,10 +3,10 @@ from random import uniform
 from ursina import *
 
 from CustomMath import Vec2
+from Event import Event
 from Flame import Flame
 from RainDrop import RainDrop
 from SingleValueEvent import SingleValueEvent
-from src.Event import Event
 
 
 class Weapon:
