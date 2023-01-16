@@ -63,7 +63,9 @@ class FlameThrower(Weapon):
         self.ammo += time.dt
 
     def startShootClip(self):
-        self.shootClip.play()
+        # self.shootClip.play()
+        pass
 
     def stopShootClip(self):
-        self.shootClip.stop()
+        # self.shootClip.stop()
+        pass

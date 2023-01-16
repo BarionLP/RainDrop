@@ -36,6 +36,7 @@ def main():
     global player
     player = Player(0, 0)
     player.onDeath.addListener(onPlayerDeath)
+
     Enemy(10, 15, 35, player)
     Enemy(-10, 10, 20, player)
     Enemy(-10, 5, 29, player)
@@ -71,7 +72,7 @@ def spawn_entity():
 
     Enemy(x, y, player.water + (random.random()-0.3) * player.scale_x, player)
 
-    if True:  # cancel condition
+    if True:  # TODO cancel condition
         invoke(spawn_entity, delay=3)
 
 
